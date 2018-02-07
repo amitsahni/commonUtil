@@ -35,7 +35,7 @@ public class LogUtil {
      */
     public static final String TAG = "log";
 
-    private static boolean isLogEnabled = false;
+    private static boolean isLogEnabled = true;
 
     /**
      * private constructor

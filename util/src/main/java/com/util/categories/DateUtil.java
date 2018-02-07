@@ -101,15 +101,12 @@ public final class DateUtil {
         return simpleFormat;
     }
 
-    /**
-     * Functionality to find time in UTC after conversion of device local time
-     *
-     * @param format required format of date. if null/empty then default format is yyyy-MM-dd HH:mm:ss
-     * @param locale the locale
-     * @return date time string
-     */
-    public static String getCurrentUTCDateTime(String format, Locale locale) {
-        String convertedDateTime = "";
+    public static String getCurrentUTC(String format, Locale locale) {
+        SimpleDateFormat formatter = getDateFormat(format, locale);
+        return formatter.format(getCurrentUTC().getTime());
+    }
+
+    public static Date getCurrentUTC() {
         Calendar calendar = Calendar.getInstance();
         int ro = calendar.getTimeZone().getRawOffset();
         int dst = calendar.getTimeZone().getDSTSavings();
@@ -121,74 +118,40 @@ public final class DateUtil {
         if (isDayLight) {
             gmtMillis = calendar.getTimeInMillis() - ro - dst;
         }
-        SimpleDateFormat formatter = getDateFormat(format, locale);
-        convertedDateTime = formatter.format(gmtMillis);
-        return convertedDateTime;
+        return new Date(gmtMillis);
     }
 
-    /**
-     * Functionality to convert utc time into device's locale time
-     *
-     * @param utcDateTime utc date-time that need to convert
-     * @param format      of required output time if you pass null/empty then default is (MM/dd/yyyy hh:mm:ss aa)
-     * @param locale      the locale
-     * @return locale date time string
-     */
-    public static String convertUtcToLocal(@NonNull String utcDateTime,
-                                           @NonNull String parseFormat,
-                                           @NonNull String format,
-                                           @NonNull Locale locale) {
-        SimpleDateFormat formatter = getDateFormat(parseFormat, locale);
+    public static Date convertToUTCDate(Date date) {
         Calendar calendar = Calendar.getInstance();
         int ro = calendar.getTimeZone().getRawOffset();
         int dst = calendar.getTimeZone().getDSTSavings();
 
-        Date convertedDate = null;
-        try {
-            convertedDate = formatter
-                    .parse(utcDateTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return utcDateTime;
-        }
         boolean isDayLight = TimeZone.getDefault().inDaylightTime(
-                convertedDate);
-        formatter = getDateFormat(format, locale);
+                date);
+
+        long gmtMillis = date.getTime() - (ro);
         if (isDayLight) {
-            utcDateTime = formatter.format(convertedDate
-                    .getTime() + ro + dst);
-        } else {
-            utcDateTime = formatter.format(convertedDate
-                    .getTime() + ro /* + dst */);
+            gmtMillis = date.getTime() - ro - dst;
         }
-        return utcDateTime;
+        return new Date(gmtMillis);
     }
 
+    public static String convertMillisecondToUTC(String format, long milli) {
+        SimpleDateFormat sdf = getDateFormat(format);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String text = sdf.format(new Date(milli));
+        LogUtil.i("Date = " + convertToUTCDate(sdf.getCalendar().getTime()));
+        return text;
+    }
 
-    /**
-     * Gets a date with a desired format as a String
-     *
-     * @param date   date to be formated
-     * @param format desired format (e.g. "yyyy-MM-dd HH:mm:ss")
-     * @return returns a date with the given format
-     */
     public static String formatDate(long date, @NonNull String format) {
         return formatDateBase(date, format, null, Locale.ENGLISH);
     }
 
-    /**
-     * Gets a date with a desired format as a String
-     *
-     * @param date     date to be formated
-     * @param format   desired format (e.g. "yyyy-MM-dd HH:mm:ss")
-     * @param timeZone specify the intended timezone (e.g. "GMT", "UTC", etc.)
-     * @return returns a date with the given format
-     */
     public static String formatDate(long date, @NonNull String format,
                                     @NonNull String timeZone) {
         return formatDateBase(date, format, timeZone, Locale.ENGLISH);
     }
-
 
     public static String formatDate(long date, @NonNull String format,
                                     @NonNull String timeZone, @NonNull Locale locale) {
@@ -200,15 +163,6 @@ public final class DateUtil {
         return getDateFormat(format, timeZone, locale).format(date);
     }
 
-    /**
-     * Parse a data string into a real Date
-     * <p>
-     * Note: (e.g. "yyyy-MM-dd HH:mm:ss")
-     *
-     * @param dateString date in String format
-     * @param dateFormat desired format (e.g. "yyyy-MM-dd HH:mm:ss")
-     * @return java . util . date
-     */
     @Nullable
     public static Date parseDate(@NonNull String dateString,
                                  @NonNull String dateFormat) {
@@ -562,24 +516,7 @@ public final class DateUtil {
         }
     }
 
-    /**
-     * Gets time ago.
-     *
-     * @param context       the context
-     * @param createdDate   the created date
-     * @param currentFormat the current format
-     * @return the time ago
-     */
-    public static String getTimeAgo(Context context, String createdDate, String currentFormat) {
-        Date date;
-        if (createdDate.contains("T")) {
-            String value = convertUtcToLocal(createdDate, DATETIME_FORMAT, currentFormat, Locale.ENGLISH);
-            date = parseDate(value, DATETIME_FORMAT);
-        } else {
-            date = parseDate(createdDate, DATETIME_FORMAT);
-        }
-        if (date == null)
-            return "";
+    public static String getTimeAgo(Context context, Date date) {
         long diff = new Date().getTime() - date.getTime();
         String time = millisToLongDHMS(context, diff);
         String[] timeAgo = time.split(",");
