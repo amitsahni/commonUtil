@@ -9,7 +9,11 @@ import java.lang.reflect.Modifier;
 /**
  * The type LogUtil.
  */
-public class LogUtil {
+public final class LogUtil {
+    private LogUtil() {
+
+    }
+
     /**
      * The constant VERBOSE.
      */

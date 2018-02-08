@@ -6,14 +6,8 @@ import com.google.common.hash.Hashing;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * The type SecurityUtil.
- */
-public class SecurityUtil {
+public final class SecurityUtil {
 
-    /**
-     * private constructor
-     */
     protected SecurityUtil() {
     }
 

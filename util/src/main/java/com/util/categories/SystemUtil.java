@@ -1,5 +1,6 @@
 package com.util.categories;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Service;
@@ -11,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -53,9 +55,6 @@ import javax.security.auth.x500.X500Principal;
  */
 public class SystemUtil {
 
-    /**
-     * private constructor
-     */
     protected SystemUtil() {
     }
 
@@ -84,6 +83,7 @@ public class SystemUtil {
      * @param context Activity context
      * @return true if Internet is connected
      */
+    @SuppressLint("MissingPermission")
     public static boolean isInternetConnected(Context context) {
         boolean isWifiConnected = false;
         boolean isMobileInternetConnected = false;
@@ -146,6 +146,7 @@ public class SystemUtil {
      * @param context  the context
      * @param duration duration of the vibration in miliseconds
      */
+    @SuppressLint("MissingPermission")
     public static void vibrate(Context context, int duration) {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(duration);
@@ -662,5 +663,50 @@ public class SystemUtil {
         }
     }
 
+    /**
+     * Define exif orientation int.
+     *
+     * @param imageUri the image uri
+     * @return the int
+     */
+    public static int defineExifOrientation(String imageUri) {
+        int rotation = 0;
+
+        try {
+            ExifInterface exif = new ExifInterface(imageUri);
+            int exifOrientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+            switch (exifOrientation) {
+
+                case ExifInterface.ORIENTATION_NORMAL:
+                    rotation = 0;
+
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotation = 90;
+
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotation = 180;
+
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotation = 270;
+
+                    break;
+                default:
+                    // Nothing
+                    break;
+            }
+        } catch (IOException e) {
+            LogUtil.e("Can't read EXIF tags from file [%s]" + imageUri);
+        }
+
+        return rotation;
+    }
 
 }

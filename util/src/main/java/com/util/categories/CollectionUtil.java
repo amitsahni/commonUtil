@@ -9,10 +9,11 @@ import java.util.Hashtable;
 import java.util.List;
 
 
-/**
- * The type CollectionUtil.
- */
-public class CollectionUtil {
+public final class CollectionUtil {
+
+    private CollectionUtil() {
+
+    }
 
     /**
      * New array list array list.

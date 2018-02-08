@@ -4,7 +4,7 @@ package com.util.categories;
 /**
  * The type Location model.
  */
-public class LocationModel {
+public final class LocationModel {
     /**
      * The Latitude.
      */

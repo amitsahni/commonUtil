@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
-
 import java.io.IOException;
 import java.util.List;
 
@@ -12,8 +11,10 @@ import java.util.List;
 /**
  * The type Location util.
  */
-public class LocationUtil {
+public final class LocationUtil {
+    private LocationUtil() {
 
+    }
     /**
      * Gets the location by Coordinates
      *

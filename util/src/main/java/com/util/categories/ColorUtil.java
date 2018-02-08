@@ -1,10 +1,10 @@
 package com.util.categories;
 
 
-/**
- * The type ColorUtil.
- */
-public class ColorUtil {
+public final class ColorUtil {
+    private ColorUtil() {
+
+    }
 
     /**
      * Add alpha string.
@@ -20,8 +20,6 @@ public class ColorUtil {
             alphaHex = "0" + alphaHex;
         }
         originalColor = originalColor.replace("#", "#" + alphaHex);
-
-
         return originalColor;
     }
 }

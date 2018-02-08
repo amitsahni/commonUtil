@@ -7,7 +7,10 @@ import android.content.Intent;
 /**
  * The type ShareUtil.
  */
-public class ShareUtil {
+public final class ShareUtil {
+    private ShareUtil() {
+
+    }
 
     /**
      * ShareUtil via Email
