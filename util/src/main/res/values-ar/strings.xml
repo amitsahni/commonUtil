@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">util</string>
+    <string name="days">يوم</string>
+    <string name="hours">ساعة</string>
+    <string name="minutes">دقيقة</string>
+    <string name="seconds">ثانية</string>
+    <string name="justnow_time">الان</string>
+</resources>

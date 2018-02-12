@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">util</string>
+    <string name="days">d</string>
+    <string name="hours">h</string>
+    <string name="minutes">m</string>
+    <string name="seconds">s</string>
+    <string name="justnow_time">justnow</string>
+</resources>
