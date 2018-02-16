@@ -24,6 +24,7 @@ import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.StringRes;
+import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -642,6 +643,37 @@ public class SystemUtil {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
         activity.startActivity(intent);
+    }
+
+    /**
+     * Gallery.
+     *
+     * @param context     the context
+     * @param requestCode the request code
+     */
+    public static void gallery(Activity context, int requestCode) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        context.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * This method is used to call inbuild camera of device
+     *
+     * @param context     the context
+     * @param requestCode the request code
+     * @param imagePath   the image path
+     */
+    public static void camera(Activity context, int requestCode, File imagePath) {
+        Intent intent = new Intent(
+                android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        if (imagePath == null)
+            imagePath = new File(FileUtil.getImages(context), "camera.png");
+        Uri mUri = FileProvider.getUriForFile(context, context.getApplication().getPackageName(), imagePath);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+        intent.putExtra("return-data", true);
+        context.startActivityForResult(intent, requestCode);
     }
 
     /**
