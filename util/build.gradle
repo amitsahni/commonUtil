@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -23,8 +23,9 @@ android {
 
 dependencies {
     compile 'com.android.support:support-annotations:27.0.2'
-    compile 'com.android.support:support-core-utils:27.0.2'
+    compile deps.coreUtil
     /*  IO Lib */
-    //compile 'org.apache.commons:commons-lang3:3.7'
-    compile 'com.google.guava:guava:24.0-android'
+    compile deps.commonslang
+    compile deps.commonsio
+    compile deps.commonscodec
 }

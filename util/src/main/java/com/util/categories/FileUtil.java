@@ -10,9 +10,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.FileWriteMode;
-import com.google.common.io.Files;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -100,7 +99,7 @@ public final class FileUtil {
 
     public static void copyFile(FileInputStream fromFile, FileOutputStream toFile) {
         try {
-            ByteStreams.copy(fromFile, toFile);
+            IOUtils.copy(fromFile, toFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,7 +107,7 @@ public final class FileUtil {
 
     public static void copyFile(File fromFile, File toFile) {
         try {
-            Files.copy(fromFile, toFile);
+            FileUtils.copyFile(fromFile, toFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -168,7 +167,7 @@ public final class FileUtil {
 
     public static void writeStringToFile(File file, String data) {
         try {
-            Files.asCharSink(file, Charset.defaultCharset()).write(data);
+            FileUtils.writeStringToFile(file, data, Charset.defaultCharset());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -176,7 +175,7 @@ public final class FileUtil {
 
     public static void writeStringToFile(File file, String data, boolean append) {
         try {
-            Files.asCharSink(file, Charset.defaultCharset(), FileWriteMode.APPEND).write(data);
+            FileUtils.writeStringToFile(file, data, Charset.defaultCharset(), append);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -184,7 +183,7 @@ public final class FileUtil {
 
     public static void writeBytesToFile(File file, byte[] bytes) {
         try {
-            Files.asCharSink(file, Charset.defaultCharset()).write(new String(bytes));
+            FileUtils.writeByteArrayToFile(file, bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -200,7 +199,7 @@ public final class FileUtil {
     public static byte[] readBytesFromFile(File file) {
         byte[] bytes = new byte[0];
         try {
-            bytes = Files.asByteSource(file).read();
+            bytes = FileUtils.readFileToByteArray(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -215,7 +214,6 @@ public final class FileUtil {
      * @throws IOException the io exception
      */
     public static void compress(File source, File target) throws IOException {
-
         ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)));
         ZipEntry zipEntry = new ZipEntry(source.getName());
         zipOut.putNextEntry(zipEntry);

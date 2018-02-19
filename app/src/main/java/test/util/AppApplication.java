@@ -1,7 +1,7 @@
 package test.util;
 
 import android.support.multidex.MultiDexApplication;
-model
+
 /**
  * Created by clickapps on 6/2/18.
  */

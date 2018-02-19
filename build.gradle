@@ -23,3 +23,12 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext.deps = [
+        appcompat   : 'com.android.support:appcompat-v7:27.0.2',
+        multidex    : 'com.android.support:multidex:1.0.2',
+        commonsio   : 'commons-io:commons-io:2.6',
+        commonslang : 'org.apache.commons:commons-lang3:3.7',
+        commonscodec: 'commons-codec:commons-codec:1.11',
+        coreUtil    : 'com.android.support:support-core-utils:27.0.2'
+]

@@ -1,9 +1,11 @@
 package com.util.categories;
 
-import com.google.common.hash.Hashing;
-import com.google.common.io.BaseEncoding;
+import android.util.Base64;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 public final class SecurityUtil {
 
@@ -40,7 +42,7 @@ public final class SecurityUtil {
      * @return encoded String in base64
      */
     private static String privateBase64Encoder(String toEncode, int flags) {
-        return BaseEncoding.base64().encode(toEncode.getBytes());
+        return Base64.encodeToString(toEncode.getBytes(), flags == -1 ? Base64.DEFAULT : flags);
     }
 
     /**
@@ -74,7 +76,7 @@ public final class SecurityUtil {
     private static String privateBase64Decoder(String decode, int flags) {
         String decodedBase64 = null;
         try {
-            decodedBase64 = new String(BaseEncoding.base64().decode(decode), "UTF-8");
+            decodedBase64 = new String(Base64.decode(decode, flags == -1 ? Base64.DEFAULT : flags), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -89,7 +91,7 @@ public final class SecurityUtil {
      * @return MD5 'ed String
      */
     public static String calculateMD5(String string) {
-        return Hashing.md5().hashBytes(string.getBytes()).toString();
+        return new String(DigestUtils.md5(string.getBytes()), Charset.defaultCharset());
     }
 
     /**
@@ -99,7 +101,7 @@ public final class SecurityUtil {
      * @return SHA1 'ed String
      */
     public static String calculateSHA1(String string) {
-        return Hashing.sha1().hashBytes(string.getBytes()).toString();
+        return new String(DigestUtils.sha1(string.getBytes()), Charset.defaultCharset());
     }
 
     /**
@@ -109,6 +111,6 @@ public final class SecurityUtil {
      * @return SHA256 'ed String
      */
     public static String calculateSHA256(String string) {
-        return Hashing.sha256().hashBytes(string.getBytes()).toString();
+        return new String(DigestUtils.sha256(string.getBytes()), Charset.defaultCharset());
     }
 }
