@@ -10,14 +10,20 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.FileWriteMode;
+import com.google.common.io.Files;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import static android.os.Environment.MEDIA_MOUNTED;
 
@@ -27,6 +33,7 @@ import static android.os.Environment.MEDIA_MOUNTED;
 public final class FileUtil {
     public static final int BYTES_TO_MB = 1048576;
     private final static String TAG = FileUtil.class.getSimpleName();
+    static final int BUFFER = 2048;
 
     /**
      * protected constructor
@@ -93,7 +100,7 @@ public final class FileUtil {
 
     public static void copyFile(FileInputStream fromFile, FileOutputStream toFile) {
         try {
-            IOUtils.copy(fromFile, toFile);
+            ByteStreams.copy(fromFile, toFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,7 +108,7 @@ public final class FileUtil {
 
     public static void copyFile(File fromFile, File toFile) {
         try {
-            FileUtils.copyFile(fromFile, toFile);
+            Files.copy(fromFile, toFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,7 +168,7 @@ public final class FileUtil {
 
     public static void writeStringToFile(File file, String data) {
         try {
-            FileUtils.writeStringToFile(file, data, Charset.defaultCharset());
+            Files.asCharSink(file, Charset.defaultCharset()).write(data);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -169,10 +176,81 @@ public final class FileUtil {
 
     public static void writeStringToFile(File file, String data, boolean append) {
         try {
-            FileUtils.writeStringToFile(file, data, Charset.defaultCharset(), append);
+            Files.asCharSink(file, Charset.defaultCharset(), FileWriteMode.APPEND).write(data);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void writeBytesToFile(File file, byte[] bytes) {
+        try {
+            Files.asCharSink(file, Charset.defaultCharset()).write(new String(bytes));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Read bytes from a File into a byte[].
+     *
+     * @param file The File to read.
+     * @return A byte[] containing the contents of the File.
+     * @throws IOException Thrown if the File is too long to read or couldn't be                     read fully.
+     */
+    public static byte[] readBytesFromFile(File file) {
+        byte[] bytes = new byte[0];
+        try {
+            bytes = Files.asByteSource(file).read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+
+    /**
+     * Compresses a single file (source) and prepares a zip file (target)
+     *
+     * @param source the source
+     * @param target the target
+     * @throws IOException the io exception
+     */
+    public static void compress(File source, File target) throws IOException {
+
+        ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)));
+        ZipEntry zipEntry = new ZipEntry(source.getName());
+        zipOut.putNextEntry(zipEntry);
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(source), BUFFER);
+        byte data[] = new byte[BUFFER];
+
+        int count = 0;
+        while ((count = bis.read(data, 0, BUFFER)) != -1) {
+            zipOut.write(data, 0, count);
+        }
+        bis.close();
+        zipOut.close();
+
+
+    }
+
+    /**
+     * Decompresses a zip file (source) that has a single zip entry.
+     *
+     * @param source the source
+     * @param target the target
+     * @throws IOException the io exception
+     */
+    public static void decompress(File source, File target) throws IOException {
+        ZipInputStream zipIn = new ZipInputStream(new BufferedInputStream(new FileInputStream(source), BUFFER));
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(target));
+        zipIn.getNextEntry();
+        byte data[] = new byte[BUFFER];
+
+        int count = 0;
+        while ((count = zipIn.read(data, 0, BUFFER)) != -1) {
+            bos.write(data, 0, count);
+        }
+        bos.close();
+        zipIn.close();
     }
 
 

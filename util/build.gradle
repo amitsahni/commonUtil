@@ -23,10 +23,8 @@ android {
 
 dependencies {
     compile 'com.android.support:support-annotations:27.0.2'
-    /*  IO Lib */
-    compile 'commons-io:commons-io:2.6'
-    compile 'org.apache.commons:commons-lang3:3.7'
-    compile 'com.google.guava:guava:24.0-android'
-    compile 'net.danlew:android.joda:2.9.9.2'
     compile 'com.android.support:support-core-utils:27.0.2'
+    /*  IO Lib */
+    //compile 'org.apache.commons:commons-lang3:3.7'
+    compile 'com.google.guava:guava:24.0-android'
 }

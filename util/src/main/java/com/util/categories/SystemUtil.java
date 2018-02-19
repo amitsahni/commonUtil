@@ -34,20 +34,12 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ScrollView;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
+import java.util.Locale;
 
 import javax.security.auth.x500.X500Principal;
 
@@ -58,11 +50,6 @@ public class SystemUtil {
 
     protected SystemUtil() {
     }
-
-    /**
-     * Common Buffer Size
-     */
-    static final int BUFFER = 2048;
 
     /**
      * Gets font.
@@ -265,84 +252,6 @@ public class SystemUtil {
             ai = null;
         }
         return (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
-    }
-
-    /**
-     * Writes the specified byte[] to the specified File path.
-     *
-     * @param theFile File Object representing the path to write to.
-     * @param bytes   The byte[] of data to write to the File.
-     * @throws IOException Thrown if there is problem creating or writing the                     File.
-     */
-    public static void writeBytesToFile(File theFile, byte[] bytes) {
-        try {
-            FileUtils.writeByteArrayToFile(theFile, bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Read bytes from a File into a byte[].
-     *
-     * @param file The File to read.
-     * @return A byte[] containing the contents of the File.
-     * @throws IOException Thrown if the File is too long to read or couldn't be                     read fully.
-     */
-    public static byte[] readBytesFromFile(File file) {
-        byte[] bytes = new byte[0];
-        try {
-            bytes = FileUtils.readFileToByteArray(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bytes;
-    }
-
-    /**
-     * Compresses a single file (source) and prepares a zip file (target)
-     *
-     * @param source the source
-     * @param target the target
-     * @throws IOException the io exception
-     */
-    public static void compress(File source, File target) throws IOException {
-
-        ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)));
-        ZipEntry zipEntry = new ZipEntry(source.getName());
-        zipOut.putNextEntry(zipEntry);
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(source), BUFFER);
-        byte data[] = new byte[BUFFER];
-
-        int count = 0;
-        while ((count = bis.read(data, 0, BUFFER)) != -1) {
-            zipOut.write(data, 0, count);
-        }
-        bis.close();
-        zipOut.close();
-
-
-    }
-
-    /**
-     * Decompresses a zip file (source) that has a single zip entry.
-     *
-     * @param source the source
-     * @param target the target
-     * @throws IOException the io exception
-     */
-    public static void decompress(File source, File target) throws IOException {
-        ZipInputStream zipIn = new ZipInputStream(new BufferedInputStream(new FileInputStream(source), BUFFER));
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(target));
-        zipIn.getNextEntry();
-        byte data[] = new byte[BUFFER];
-
-        int count = 0;
-        while ((count = zipIn.read(data, 0, BUFFER)) != -1) {
-            bos.write(data, 0, count);
-        }
-        bos.close();
-        zipIn.close();
     }
 
     private static final X500Principal DEBUG_DN = new X500Principal("CN=Android Debug,O=Android,C=US");
@@ -597,9 +506,9 @@ public class SystemUtil {
         String manufacturer = getDeviceManufacturer();
         String model = getDeviceModel();
         if ((model != null) && model.startsWith(manufacturer)) {
-            return ValidatorUtil.capitalize(model);
+            return model.toUpperCase(Locale.getDefault());
         } else if (manufacturer != null) {
-            return ValidatorUtil.capitalize(manufacturer) + " " + model;
+            return manufacturer.toUpperCase(Locale.getDefault()) + " " + model;
         } else {
             return "Unknown";
         }

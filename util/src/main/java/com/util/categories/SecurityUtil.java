@@ -1,8 +1,7 @@
 package com.util.categories;
 
-import android.util.Base64;
-
 import com.google.common.hash.Hashing;
+import com.google.common.io.BaseEncoding;
 
 import java.io.UnsupportedEncodingException;
 
@@ -41,18 +40,7 @@ public final class SecurityUtil {
      * @return encoded String in base64
      */
     private static String privateBase64Encoder(String toEncode, int flags) {
-        byte[] data = null;
-        try {
-            data = toEncode.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e1) {
-            e1.printStackTrace();
-        }
-
-        if (flags == -1) {
-            flags = Base64.DEFAULT;
-        }
-
-        return Base64.encodeToString(data, flags);
+        return BaseEncoding.base64().encode(toEncode.getBytes());
     }
 
     /**
@@ -84,14 +72,9 @@ public final class SecurityUtil {
      * @return decoded String in base64
      */
     private static String privateBase64Decoder(String decode, int flags) {
-        if (flags == -1) {
-            flags = Base64.DEFAULT;
-        }
-
-        byte[] data1 = Base64.decode(decode, flags);
         String decodedBase64 = null;
         try {
-            decodedBase64 = new String(data1, "UTF-8");
+            decodedBase64 = new String(BaseEncoding.base64().decode(decode), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

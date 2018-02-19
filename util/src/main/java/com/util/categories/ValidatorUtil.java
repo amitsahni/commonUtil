@@ -2,13 +2,10 @@ package com.util.categories;
 
 import android.text.TextUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
-
 /**
  * The type ValidatorUtil.
  */
-public class ValidatorUtil extends StringUtils {
+public class ValidatorUtil {
 
     private static final String PASS_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=\\S+$).{8,20})";
     private static final String USERNAME_PATTEN = "(?=\\S+$).{3,}";
