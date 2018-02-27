@@ -18,15 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-//    dataBinding {
-//        enabled true
-//    }
+
 }
 
 dependencies {
     compile 'com.android.support:appcompat-v7:27.0.2'
-//    compile 'com.android.support:support-core-utils:27.0.2'
-//    compile deps.appcompat
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:multidex:1.0.2'
     compile project(":util")
