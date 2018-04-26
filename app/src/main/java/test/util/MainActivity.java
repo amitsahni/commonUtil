@@ -19,24 +19,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        long milli = 1518900350000L;
+//        long milli = 1518900350000L;
         Date date3 = new Date(System.currentTimeMillis());
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         calendar.setTime(date3);
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
         cal.setTime(date3);
-        System.out.println(cal.getTime());
-        LogUtil.w("CurrentDateLocal = " + cal.getTime());
-        LogUtil.w("CurrentDateUTC = " + DateUtil.convertToUTCDate(date3));
-        LogUtil.w("Date = " + DateUtil.convertMillisecondToUTC("dd-MM-yyyy", calendar.getTime().getTime()));
+        LogUtil.w("CurrentDateTimeLocal = " + cal.getTime());
+        LogUtil.w("CurrentDateTimeUTC = " + DateUtil.convertToUTCDate(date3));
+        LogUtil.w("CurrentDateTimeUTCUsingMillisecond = " + DateUtil.convertMillisecondToUTC("dd-MMM-yyyy HH:mm:ss", calendar.getTime().getTime()));
         String date = DateUtil.formatDate(calendar.getTime().getTime(), "dd-MM-yyyy HH:mm:ss");
         date3 = DateUtil.parseDate(date, "dd-MM-yyyy HH:mm:ss");
         Locale locale = new Locale("ar");
         date = DateUtil.formatDate(date3.getTime(), "dd-MMM-yyyy HH:mm:ss", TimeZone.getDefault(), locale);
-        LogUtil.w("CurrentDateUTC = " + date3.toString());
+        LogUtil.w("CurrentDateArabicLocal = " + date);
+        date = DateUtil.formatDate(date3.getTime(), "dd-MMM-yyyy HH:mm:ss", TimeZone.getTimeZone("GMT"), locale);
+        LogUtil.w("CurrentDateArabicUTC = " + date);
+
+        date = DateUtil.formatDate(DateUtil.convertToUTCDate(date3).getTime(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         LogUtil.w("CurrentDateUTC = " + date);
-        date3 = DateUtil.parseDate(date, "dd-MMM-yyyy HH:mm:ss", locale);
-        LogUtil.w("CurrentDateUTC = " + date3.toString());
+        date3 = DateUtil.parseDate(date, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", TimeZone.getTimeZone("GMT"));
+        LogUtil.w("CurrentDateLocal = " + date3);
+
 
     }
 }

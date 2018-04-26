@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-
 import com.util.R;
 
 import java.text.DateFormat;
@@ -191,6 +190,13 @@ public final class DateUtil {
     @Nullable
     public static Date parseDate(@NonNull String date,
                                  @NonNull String format,
+                                 @NonNull TimeZone timeZone) {
+        return parseDateBase(date, format, Locale.ENGLISH, timeZone);
+    }
+
+    @Nullable
+    public static Date parseDate(@NonNull String date,
+                                 @NonNull String format,
                                  @NonNull Locale locale,
                                  @NonNull TimeZone timeZone) {
         return parseDateBase(date, format, locale, timeZone);
@@ -201,7 +207,7 @@ public final class DateUtil {
                                       @NonNull Locale locale,
                                       @NonNull TimeZone timeZone) {
         Date d = null;
-        DateFormat sdf = getDateFormat(format, TimeZone.getDefault(), locale);
+        DateFormat sdf = getDateFormat(format, timeZone, locale);
         try {
             d = sdf.parse(date);
             date = getDateFormat(format, timeZone, locale).format(d.getTime());
