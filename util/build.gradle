@@ -24,11 +24,11 @@ android {
 
 dependencies {
     implementation 'com.android.support:support-annotations:27.1.1'
-    implementation deps.coreUtil
+    implementation 'com.android.support:support-core-utils:27.1.1'
     /*  IO Lib */
-    implementation deps.commonslang
-    implementation deps.commonsio
-    implementation deps.commonscodec
+    implementation 'org.apache.commons:commons-lang3:3.7'
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'commons-codec:commons-codec:1.11'
 }
 
 // build a jar with source files
