@@ -1,20 +1,20 @@
 ------
 ### CommonUtil 
 #### Available Utils:
-```
-AnimationUtil
-CollectionUtil
-ColorUtil
-DateUtil
-FileUtil
-LogUtil
-MathUtil
-SecurityUtil
-ShareUtil
-SystemUtil
-ValidatorUtil
-VoiceUtil
-```
+
+* [AnimationUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/AnimationUtil.java)
+* [CollectionUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/CollectionUtil.java)
+* [ColorUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/ColorUtil.java)
+* [DateUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/DateUtil.java)
+* [FileUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/FileUtil.java)
+* [LogUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/LogUtil.java)
+* [MathUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/MathUtil.java)
+* [SecurityUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/SecurityUtil.java)
+* [ShareUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/ShareUtil.java)
+* [SystemUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/SystemUtil.java)
+* [ValidatorUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/ValidatorUtil.java)
+* [VoiceUtil](https://github.com/amitsahni/commonUtil/blob/dev/util/src/main/java/com/util/categories/VoiceUtil.java)
+
 #### How to use
 ```
 Date date3 = new Date(System.currentTimeMillis());
@@ -42,6 +42,6 @@ Add the JitPack repository to your root build.gradle
 Add the Gradle dependency:
 ```
 	dependencies {
-		compile 'com.github.amitsahni:commonUtil:latestVersion'
+		compile 'com.github.amitsahni:commonUtil:{latest version}'
 	}
 ```
