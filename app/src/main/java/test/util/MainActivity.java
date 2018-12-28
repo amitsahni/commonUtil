@@ -1,10 +1,13 @@
 package test.util;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.util.categories.DateUtil;
 import com.util.categories.LogUtil;
+import com.util.categories.ValidatorUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +17,7 @@ import java.util.TimeZone;
 
 
 public class MainActivity extends AppCompatActivity {
+    int rotation = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,20 @@ public class MainActivity extends AppCompatActivity {
         LogUtil.w("CurrentDateUTC = " + date);
         date3 = DateUtil.parseDate(date, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", TimeZone.getTimeZone("GMT"));
         LogUtil.w("CurrentDateLocal = " + date3);
+        View view = findViewById(R.id.mini_progress);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                rotation += 90;
+                ViewCompat.animate(v)
+                        .rotation(rotation)
+                        .start();
+
+            }
+        });
+
+        ValidatorUtil.isJSONValid("{message:'This is a message', version: {num: 10}}");
 
 
     }

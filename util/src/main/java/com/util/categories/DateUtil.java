@@ -71,7 +71,7 @@ public final class DateUtil {
     }
 
     public static DateFormat getDateFormat() {
-        return getDateFormatBase(null, TimeZone.getDefault(), Locale.ENGLISH);
+        return getDateFormatBase(FORMAT, TimeZone.getDefault(), Locale.ENGLISH);
     }
 
     public static DateFormat getDateFormat(@NonNull String format) {
@@ -306,7 +306,7 @@ public final class DateUtil {
         TimeZone tz = TimeZone.getDefault();
         Calendar cal = GregorianCalendar.getInstance(tz);
         int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
-        String offset = String.format("%02d:%02d", Math.abs(offsetInMillis / 3600000), Math.abs((offsetInMillis / 60000) % 60));
+        String offset = String.format(Locale.ENGLISH, "%02d:%02d", Math.abs(offsetInMillis / 3600000), Math.abs((offsetInMillis / 60000) % 60));
         offset = "GMT" + (offsetInMillis >= 0 ? "+" : "-") + offset;
         return offset;
     }

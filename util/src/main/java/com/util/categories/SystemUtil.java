@@ -23,6 +23,7 @@ import android.os.StatFs;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
@@ -169,7 +170,7 @@ public class SystemUtil {
      * @param context the context
      * @return device id
      */
-    public static String getDeviceID(Context context) {
+    public static String getDeviceID(@NonNull Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
