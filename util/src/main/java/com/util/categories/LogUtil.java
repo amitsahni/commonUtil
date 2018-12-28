@@ -214,6 +214,14 @@ public final class LogUtil {
     }
 
     /**
+     * Print formatted json
+     * @param message
+     */
+    public static void printJson(String message) {
+        ValidatorUtil.isJSONValid(message);
+    }
+
+    /**
      * Private Logger function to handle LogUtil calls
      *
      * @param level     level of the log message

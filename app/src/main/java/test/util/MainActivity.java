@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ValidatorUtil.isJSONValid("{message:'This is a message', version: {num: 10}}");
+        LogUtil.printJson("{message:'This is a message', version: {num: 10}}");
 
 
     }
